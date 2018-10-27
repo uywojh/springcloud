@@ -5,9 +5,16 @@ import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 第一个前置过滤器
+ * @author wuwei
+ *
+ */
+@Component
 public class TokenFilter extends ZuulFilter {
 
     private final Logger logger = LoggerFactory.getLogger(TokenFilter.class);

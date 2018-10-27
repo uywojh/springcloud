@@ -51,8 +51,5 @@ Spring Cloud 使用的各种示例，以最简单、最实用为标准
 > 如果大家想了解关于springcloud的其它方面应用，也可以以[issues](https://github.com/ityouknow/spring-cloud-examples/issues)的形式反馈给我，我后续来完善。
 
  
- 关注公众号：纯洁的微笑，回复"springboot"进群交流
-
-![](http://www.ityouknow.com/assets/images/keeppuresmile_430.jpg)
 
 
