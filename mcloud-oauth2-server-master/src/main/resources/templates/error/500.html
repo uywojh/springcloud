@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>500 | MCloud</title>
+    <th:block th:replace="fragments/layout::core-css"/>
+    <th:block th:replace="fragments/layout::app-css"/>
+</head>
+<!--todo 跳转回上一页-->
+<body class="five-zero-zero">
+    <div class="five-zero-zero-container">
+        <div class="error-code">500</div>
+        <div class="error-message">Internal Server Error</div>
+        <div class="button-place">
+            <a th:href="@{/admin/dashboard}" class="btn btn-default btn-lg waves-effect">GO TO HOMEPAGE</a>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments/layout::core-js"/>
+
+</body>
+
+</html>

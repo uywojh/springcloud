@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm | MCloud OAuth2</title>
+
+  <th:block th:replace="fragments/layout::core-css"/>
+  <th:block th:replace="fragments/layout::app-css"/>
+
+</head>
+
+<body class="login-page">
+<div class="login-box">
+  <div class="card">
+    <div class="header bg-green">
+      <h2>
+        Authorize Application
+        <small>
+          <!--/*@thymesVar id="client" type="me.javaroad.mcloud.oauth.dto.response.ClientResponse"*/-->
+        <b><span class="font-bold" th:text="${client.clientId}"></span></b> would like permission access to access your account.
+      </small>
+      </h2>
+      <ul class="header-dropdown m-r-0">
+        <li>
+          <a href="javascript:void(0);">
+            <i class="material-icons">info_outline</i>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            <i class="material-icons">help_outline</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="body">
+      <h4>Review permissions</h4>
+      <hr/>
+      <form name="confirmationForm"
+            th:action="@{/oauth/authorize}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input name="user_oauth_approval" value="true" type="hidden"/>
+        <!--/*@thymesVar id="scopes" type="java.util.Map<java.lang.String, java.lang.Object>"*/-->
+        <th:block th:each="scope, stat:${scopes}">
+          <input type="checkbox" th:id="${'scope-'+stat.index}" th:name="${scope.key}" class="filled-in" checked=""
+                 disabled="">
+          <label th:for="${'scope-'+stat.index}" th:text="${#strings.substringAfter(scope.key,'.')}"></label>
+        </th:block>
+        <br/>
+        <br/>
+        <div class="row">
+          <div class="col-xs-6">
+          </div>
+          <div class="col-xs-6">
+            <button class="btn btn-block bg-pink waves-effect">Authorize Application</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<th:block th:replace="fragments/layout::core-js"/>
+
+</body>
+
+</html>
