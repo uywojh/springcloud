@@ -1,5 +1,6 @@
 package com.neo;
 
+import com.neo.filter.SecondFilter;
 import com.neo.filter.TokenFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,10 @@ public class ZuulApplication {
 	@Bean
 	public TokenFilter tokenFilter() {
 		return new TokenFilter();
+	}
+	@Bean
+	public SecondFilter secondFilter() {
+		return new SecondFilter();
 	}
 
 }
