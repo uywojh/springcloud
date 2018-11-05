@@ -30,6 +30,11 @@ import com.github.liuweijw.core.configuration.JwtConfiguration;
 
 /**
  * @author liuweijw 认证服务器逻辑实现
+ * 开启授权服务器
+ * 认证端工程的认证配置文件
+ * OAuth2服务配置
+ * Redis用来存储token，服务重启后，无需重新获取token.
+ * 2.1
  */
 @Configuration
 @Order(Integer.MIN_VALUE)
@@ -53,7 +58,7 @@ public class FwAuthorizationConfiguration extends AuthorizationServerConfigurerA
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory()
+		clients.inMemory()// 使用in-memory存储
 				.withClient(authServerConfiguration.getClientId())
 				.secret(authServerConfiguration.getClientSecret())
 				.authorizedGrantTypes(SecurityConstant.REFRESH_TOKEN, SecurityConstant.PASSWORD, SecurityConstant.AUTHORIZATION_CODE)
@@ -89,7 +94,7 @@ public class FwAuthorizationConfiguration extends AuthorizationServerConfigurerA
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		FwJwtAccessTokenConverter jwtAccessTokenConverter = new FwJwtAccessTokenConverter();
-		jwtAccessTokenConverter.setSigningKey(jwtConfiguration.getJwtkey());
+		jwtAccessTokenConverter.setSigningKey(jwtConfiguration.getJwtkey());//默认采用对称较密
 		// log.info("Initializing JWT with public key:\n" + authServerConfiguration.getPublicKey());
 
 		// 采用RSA非对称加密

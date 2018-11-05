@@ -14,6 +14,7 @@ import com.github.liuweijw.system.auth.component.ajax.AjaxSecurityConfigurer;
 
 /**
  * @author liuweijw 认证服务器开放接口配置
+ * 2.3安全配置
  */
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER - 2)
 @Configuration
@@ -32,10 +33,11 @@ public class FwResourceServerConfiguration extends WebSecurityConfigurerAdapter 
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.formLogin()
 				// 可以通过授权登录进行访问
 				.loginPage("/auth/login")
-				.loginProcessingUrl("/auth/signin")
+				.loginProcessingUrl("/auth/signin")//仅仅处理HTTP POST
 				.and()
 				.authorizeRequests();
 
+//		定义不需要认证就可以访问
 		for (String url : fwUrlsConfiguration.getCollects()) {
 			registry.antMatchers(url)
 					.permitAll();
@@ -45,7 +47,7 @@ public class FwResourceServerConfiguration extends WebSecurityConfigurerAdapter 
 				.authenticated()
 				.and()
 				.csrf()
-				.disable();
+				.disable();// 关闭csrf保护功能（跨域访问）
 		http.apply(ajaxSecurityConfigurer);
 	}
 

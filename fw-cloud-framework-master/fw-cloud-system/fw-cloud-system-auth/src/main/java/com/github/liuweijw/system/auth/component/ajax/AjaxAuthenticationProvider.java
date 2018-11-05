@@ -11,6 +11,13 @@ import com.github.liuweijw.system.api.model.AuthUser;
 import com.github.liuweijw.system.auth.service.UserDetailsImpl;
 
 /**
+ * 
+ *AjaxAuthenticationProvider类的责任是: 
+ *1. 对用户凭证与 数据库、LDAP或其他系统用户数据，进行验证。 
+ *2. 如果用户名和密码不匹配数据库中的记录，身份验证异常将会被抛出。 
+ *3. 创建用户上下文，你需要一些你需要的用户数据来填充（例如 用户名 和用户密码） 
+ *4. 在成功验证委托创建JWT令牌的是在* AjaxAwareAuthenticationSuccessHandler* 中实现。
+ *
  * 自定义参数验证 <br/>
  * 可以在自定义登录界面添加登录时需要的参数，如多个验证码等、可以修改默认登录名称和密码的参数名 整体流程：<br/>
  * 1.用户登录时，先经过自定义的passcard_filter过滤器，该过滤器继承了AbstractAuthenticationProcessingFilter，并且绑定了登录失败和成功时需要的处理器(跳转页面使用)<br/>
@@ -33,12 +40,10 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		AjaxAuthenticationToken ajaxAuthenticationToken = (AjaxAuthenticationToken) authentication;
 		AuthUser user = userFeignApi.findUserByMobile((String) ajaxAuthenticationToken.getPrincipal());
-
 		if (null == user)
 			throw new UsernameNotFoundException("登录账户[" + ajaxAuthenticationToken.getPrincipal() + "]不存在");
-
+		
 		UserDetailsImpl userDetails = buildUserDeatils(user);
-
 		if (null == userDetails)
 			throw new InternalAuthenticationServiceException("登录用户[" + ajaxAuthenticationToken.getPrincipal() + "]不存在！");
 
@@ -65,3 +70,18 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
 	}
 
 }
+
+
+//public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//    // 此处修改断言自定义的 MyAuthenticationToken
+//    Assert.isInstanceOf(MyAuthenticationToken.class, authentication, this.messages.getMessage("MyAbstractUserDetailsAuthenticationProvider.onlySupports", "Only MyAuthenticationToken is supported"));
+//    // ...
+//}
+//
+//protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
+//    MyAuthenticationToken result = new MyAuthenticationToken(principal, authentication.getCredentials(),((MyAuthenticationToken) authentication).getType(),((MyAuthenticationToken) authentication).getMobile(), this.authoritiesMapper.mapAuthorities(user.getAuthorities()));
+//    result.setDetails(authentication.getDetails());
+//    return result;
+//}
+
+

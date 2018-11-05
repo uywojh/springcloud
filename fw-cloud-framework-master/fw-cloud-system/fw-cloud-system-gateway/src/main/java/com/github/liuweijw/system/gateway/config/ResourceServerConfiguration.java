@@ -20,8 +20,12 @@ import com.github.liuweijw.system.gateway.handler.AccessDeniedHandler;
 
 /**
  * 资源权限配置
- * 
+ * 开启资源服务器
+ * 将ZuulServer配置成一个ResourceServer
+ * 生成OAuth2AuthenticationProcessingFilter和鉴权相关的Bean
  * @author liuweijw
+ * 2.2
+ * Resource服务配置
  */
 @Configuration
 @EnableResourceServer

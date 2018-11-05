@@ -17,6 +17,7 @@ public class UserController {
 
 	/**
 	 * 获取用户信息
+	 * 登录成功会返回：http://localhost:1004/user/info 此时成功加载受保护资源
 	 */
 	@RequestMapping("/user/info")
 	public Object user(Authentication authentication) throws IOException {

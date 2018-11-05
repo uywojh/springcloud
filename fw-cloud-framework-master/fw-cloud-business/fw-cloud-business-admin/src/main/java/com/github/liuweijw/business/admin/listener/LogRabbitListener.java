@@ -18,6 +18,7 @@ import com.github.liuweijw.core.commons.constants.MqQueueConstant;
 
 /**
  * 日志队列消息监听：消息对象必须是经过序列化操作的对象
+ * receive获取消息发送成功后的记录并保存到本地数据库
  * 
  * @author liuweijw
  */

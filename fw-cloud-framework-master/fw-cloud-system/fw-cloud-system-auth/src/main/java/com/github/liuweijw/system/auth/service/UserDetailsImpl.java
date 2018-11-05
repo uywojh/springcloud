@@ -12,6 +12,11 @@ import com.github.liuweijw.core.commons.constants.CommonConstant;
 import com.github.liuweijw.system.api.model.AuthRole;
 import com.github.liuweijw.system.api.model.AuthUser;
 
+/**
+ * 封装用户登陆的信息
+ * @author wuwei
+ *
+ */
 public class UserDetailsImpl implements UserDetails {
 
 	private static final long	serialVersionUID	= 4996108569522332042L;

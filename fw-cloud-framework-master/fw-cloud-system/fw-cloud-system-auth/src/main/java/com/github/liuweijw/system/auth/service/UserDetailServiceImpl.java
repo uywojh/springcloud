@@ -12,6 +12,11 @@ import com.github.liuweijw.commons.utils.StringHelper;
 import com.github.liuweijw.system.api.UserFeignApi;
 import com.github.liuweijw.system.api.model.AuthUser;
 
+/**
+ * 权限认证用户信息校验
+ * @author wuwei
+ *
+ */
 @Service("userDetailService")
 public class UserDetailServiceImpl implements UserDetailsService, Serializable {
 

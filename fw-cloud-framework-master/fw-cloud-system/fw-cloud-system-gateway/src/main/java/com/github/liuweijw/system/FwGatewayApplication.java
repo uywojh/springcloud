@@ -14,8 +14,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 /**
  * Gateway Server 中心
- * 
  * @author liuweijw
+ * system-gateway-server是一个简单的微服务，使用auth-server进行认证授权，在它的配置文件指定用户信息在auth-server的地址即可
  */
 @EnableZuulProxy
 @EnableFeignClients

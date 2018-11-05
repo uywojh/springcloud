@@ -8,6 +8,11 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 
 import com.github.liuweijw.core.commons.constants.SecurityConstant;
 
+/**
+ * 自定义JwtAccessToken用于添加额外用户信息
+ * @author wuwei
+ *
+ */
 public class FwJwtAccessTokenConverter extends JwtAccessTokenConverter {
 
 	@SuppressWarnings("unchecked")
