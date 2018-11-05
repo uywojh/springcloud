@@ -1,0 +1,107 @@
+业务流程
+1.用户使用支付宝or微信扫描客服提供的个人（本地存储app类型1支付宝2微信） 被打赏二维码 (被打赏者即自营馆服务人员通过调用后台接口向打赏人展示自己的二维码 javita/api/reward/userReward)
+
+2.扫完二维码将返回的信息进行本地存储 rewardUserId 被打赏者id entity 打赏配置信息
+
+3.用户获取配置信息以后进行打赏业务逻辑 调用接口javita/api/rewardRecord/add 需要参数 rewardUserId 之前本地临时存储的被打赏者id rewardMoney 打赏金额 
+用户手动输入的金额如果没输则将使用建议金额传递给后台 rewardType 打赏类型1支付宝2微信 也是之前临时保存的数据
+
+返回的主要为订单生成所产生的支付链接
+支付宝 直接调用产生的支付链接 支付成功会返回SUCCESS字符串给前端失败FAIL
+微信  返回获取openid等参数的链接 调用该链接会openid 然后在使用openid去调用后台地址(javita/api/wxpay/jsPay 需要参数 openid 调用之前的链接返回的 total_fee 打赏总金额 以分为单位)并获取生成的订单信息最后根据返回的订单信息再开始进行最后的支付
+
+
+
+
+
+首先第一次判断用户是使用支付宝还是微信进行扫码的然后进行不同的逻辑跳转
+function IsWeixinOrAlipay(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    //判断是不是微信
+    if ( ua.match(/MicroMessenger/i) == 'micromessenger' ) {  
+         
+        alert("wx");
+        break;
+    }    
+    //判断是不是支付宝
+    if (ua.match(/AlipayClient/i) == 'alipayclient') {
+		alert("ali");
+		break;
+    }
+    //哪个都不是
+    alert("false");
+}
+
+
+
+如果是微信
+返回相关的参数openid给前端然后在去调用后台接口获取支付的相关参数最后发起支付
+	<script type="text/javascript">
+	var prepay_id ;
+    var paySign ;
+    var appId ;
+    var timeStamp ;
+    var nonceStr ;
+    var packageStr ;
+    var signType ;
+    function pay(){
+        var url = 'http://api.hyl0571.com/javita/api/wxpay/jspay';
+        $.ajax({
+        type:"post",
+        url:url,
+        dataType:"json",
+        data:{openId:'${openId}'},
+        success:function(data) {
+        	if(data.resultCode == 'SUCCESS'){
+        		appId = data.appId;
+        		paySign = data.paySign;
+        		timeStamp = data.timeStamp;
+        		nonceStr = data.nonceStr;
+        		packageStr = data.packageStr;
+        		signType = data.signType;
+                callpay();
+            }else{
+            	alert("统一下单失败");
+            }
+        }
+    }); 
+    }
+    
+    function onBridgeReady(){
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+                 "appId":appId,     //公众号名称，由商户传入
+                 "paySign":paySign,         //微信签名
+                 "timeStamp":timeStamp, //时间戳，自1970年以来的秒数
+                 "nonceStr":nonceStr , //随机串
+                 "package":packageStr,  //预支付交易会话标识
+                 "signType":signType     //微信签名方式
+             },
+             function(res){
+            	 if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+             //window.location.replace("index.html");
+             alert('支付成功');
+         }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+             alert('支付取消');
+         }else if(res.err_msg == "get_brand_wcpay_request:fail" ){
+            alert('支付失败');
+         } //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+             }
+        );
+    }
+    function callpay(){
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady();
+        }
+    }
+    
+    
+    
+    91330105552660496h
